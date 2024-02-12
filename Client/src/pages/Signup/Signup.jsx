@@ -4,7 +4,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 
 const URL = "http://localhost:5000/api/auth/signup";
 
-const USER_RGX = /^\w{4,}$/;
+const USER_RGX = /^^[\w\s_0-9]{4,}$/;
 const EMAL_RGX = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
 const PASS_RGX =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$#@%])[A-Za-z\d$#@%]{8,}$/;
