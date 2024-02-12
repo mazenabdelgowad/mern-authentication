@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 
 const Navbar = () => {
   return (
-    <nav className="navbar navbar-expand-lg shadow-lg">
+    <nav className="navbar navbar-expand-lg shadow-sm">
       <div className="container">
         <NavLink className="navbar-brand" to="/">
           Auth

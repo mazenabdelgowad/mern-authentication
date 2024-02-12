@@ -1,0 +1,34 @@
+.signup {
+  gap: 1rem;
+  & .title {
+    text-transform: capitalize;
+    font-weight: bold;
+  }
+  & form {
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    gap: 1rem;
+
+    & input,
+    & button {
+      border-radius: 10px;
+      max-width: 100%;
+    }
+
+    & input {
+      background-color: #eee;
+      border: none;
+      outline: none;
+      padding: 0.5rem 1rem;
+      transition: 0.3s;
+      &:focus {
+        box-shadow: 0 0 0 3px #c8f3fa, 0 1px 2px rgba(15, 17, 17, 0.15) inset;
+      }
+    }
+    & p {
+      align-self: flex-start;
+    }
+  }
+}

@@ -5,15 +5,23 @@ import Signin from "./pages/Signin/Signin";
 import Signup from "./pages/Signup/Signup";
 import Profile from "./pages/Profile/Profile";
 import Navbar from "./components/Navbar/Navbar";
-
+import { useLocation } from "react-router-dom";
 function App() {
+  const location = useLocation();
+
+  const showNavbar =
+    location.pathname.includes("signin") ||
+    location.pathname.includes("signIn") ||
+    location.pathname.includes("signup") ||
+    location.pathname.includes("signUp"); // true
+
   return (
     <main>
-      <Navbar />
+      {!showNavbar && <Navbar />}
       <Routes>
         <Route index element={<Home />} />
         <Route path="/about" element={<About />} />
-        <Route path="/singin" element={<Signin />} />
+        <Route path="/signin" element={<Signin />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/profile" element={<Profile />} />
       </Routes>
