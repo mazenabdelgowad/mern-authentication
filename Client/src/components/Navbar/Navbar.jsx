@@ -1,6 +1,12 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  const navigate = useNavigate();
+  const signout = () => {
+    // localStorage.removeItem("token");
+    navigate("/signin");
+  };
+
   return (
     <nav className="navbar navbar-expand-lg shadow-sm">
       <div className="container">
@@ -30,11 +36,25 @@ const Navbar = () => {
                 About
               </NavLink>
             </li>
-            <li className="nav-item">
-              <NavLink className="nav-link" aria-current="page" to="/signin">
-                Sing in
-              </NavLink>
-            </li>
+            {true ? (
+              <li className="nav-item">
+                <NavLink className="nav-link" aria-current="page" to="/signin">
+                  Sing in
+                </NavLink>
+              </li>
+            ) : (
+              <button
+                className="text-danger"
+                style={{
+                  backgroundColor: "transparent",
+                  border: "none",
+                  outline: "none",
+                }}
+                onClick={signout}
+              >
+                Sing out
+              </button>
+            )}
           </ul>
         </div>
       </div>

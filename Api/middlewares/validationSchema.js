@@ -10,10 +10,15 @@ const addUserValdiation = () => {
       .withMessage("user name has min length 4 characters"),
     body("email")
       .trim()
-      .notEmpty()
-      .whitelist("email is required")
       .isEmail()
-      .withMessage("Enter a valid email address"),
+      .custom(async (value) => {
+        const existingUser = await Users.findByEmail(value);
+        if (existingUser) {
+          throw new Error("emil already used");
+        }
+      })
+      .notEmpty()
+      .withMessage("email is required"),
     body("password").trim().notEmpty().withMessage("password is required"),
   ];
 };

@@ -1,5 +1,4 @@
-.signup {
-  gap: 1rem;
+.sign-page {
   & .title {
     text-transform: capitalize;
     font-weight: bold;

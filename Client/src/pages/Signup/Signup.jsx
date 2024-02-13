@@ -5,7 +5,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 const URL = "http://localhost:5000/api/auth/signup";
 
 const USER_RGX = /^^[\w\s_0-9]{4,}$/;
-const EMAL_RGX = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+const EMAIL_RGX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 const PASS_RGX =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$#@%])[A-Za-z\d$#@%]{8,}$/;
 
@@ -63,7 +63,7 @@ const Signup = () => {
   }, [password, validPassword]);
 
   useEffect(() => {
-    const match = EMAL_RGX.test(email);
+    const match = EMAIL_RGX.test(email);
     setValidEmail(match);
   }, [email, validEmail]);
   // End Handle validation of input data
@@ -99,9 +99,12 @@ const Signup = () => {
     }
     const newUser = {
       username: userName,
-      email,
-      password,
+      email: email,
+      password: password,
     };
+
+    console.log("front end email: ", newUser);
+    // console.log("new stringified user: ", JSON.stringify(newUser));
     // SEND DATA TO SERVER
 
     isLoading(true);
@@ -115,6 +118,8 @@ const Signup = () => {
     });
 
     const data = await addNewUser.json();
+
+    console.log("backend response: ", data);
 
     isLoading(false);
     // SEND DATA TO SERVER
@@ -142,7 +147,7 @@ const Signup = () => {
 
   // Our Application
   return (
-    <div className="signup mt-5">
+    <div className="sign-page mt-5">
       <div className="container">
         <form onSubmit={handleSubmit} action="">
           <h2 className="title text-center">sign up</h2>
@@ -163,7 +168,7 @@ const Signup = () => {
             placeholder="user name"
             ref={userRef}
             onChange={(e) => {
-              setErrorStatus(true);
+              setErrorStatus(false);
               setUserName(e.target.value);
             }}
           />
@@ -182,7 +187,7 @@ const Signup = () => {
             ref={emailRef}
             placeholder="email address"
             onChange={(e) => {
-              setErrorStatus(true);
+              setErrorStatus(false);
               setEmail(e.target.value);
             }}
           />
@@ -199,7 +204,7 @@ const Signup = () => {
             ref={passwordRef}
             placeholder="password"
             onChange={(e) => {
-              setErrorStatus(true);
+              setErrorStatus(false);
               setPassword(e.target.value);
             }}
           />
@@ -216,17 +221,22 @@ const Signup = () => {
           )}
 
           {/* Sign up button */}
-          <button className="btn btn-dark" ref={submitButtonRef}>
-            sing up
+          <button
+            disabled={loading}
+            className="btn btn-dark"
+            ref={submitButtonRef}
+          >
+            sign up
           </button>
 
           {/* Sign up wiht Google button */}
           <button
             type="button"
+            disabled={loading}
             className="btn btn-danger"
             ref={signWitGoogleButtonRef}
           >
-            sing up with google
+            sign up with google
           </button>
 
           {/* Don't have an account */}
