@@ -1,32 +1,37 @@
+import { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
-import { useState } from "react";
 
-const url = `http://localhost:5000/api/users`;
+const URL = `http://localhost:5000/api/users`;
 
 const Home = () => {
   const [users, setUsers] = useState([]);
   const [errorStatus, setErrorStatus] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [role, setRole] = useState("");
+  const [token, setToken] = useState("");
 
-  // validate token and get users
-  const savedtoken = localStorage.getItem("savedToken");
-
-  const token = savedtoken.split(" ")[1]; // token without "Bearer"
-  const decodedToken = jwtDecode(token);
-  const userRole = decodedToken.role;
+  useEffect(() => {
+    try {
+      const savedtoken = localStorage.getItem("savedToken");
+      setToken(savedtoken);
+      const token = savedtoken.split(" ")[1];
+      const decodedToken = jwtDecode(token);
+      const userRole = decodedToken.role;
+      setRole(userRole);
+    } catch (e) {
+      console.log(e.message);
+    }
+  }, []);
 
   const getAllUsers = async () => {
-    const getUsers = await fetch(url, {
+    const getUsers = await fetch(URL, {
       method: "GET",
       headers: {
-        Authorization: savedtoken,
+        Authorization: token,
       },
     });
 
     const data = await getUsers.json();
-
-    // console.log(data);
-    // console.log(data.data.users);
 
     if (data.status !== "success") {
       setErrorStatus(true);
@@ -37,15 +42,13 @@ const Home = () => {
     setUsers(data.data.users);
   };
 
-  // console.log(users);
-
   return (
     <div className="home mt-5">
       <div className="container">
         <h2>Welcome to the home page!</h2>
         <p>This is a simple example of a React component.</p>
 
-        {userRole === "admin" && (
+        {role === "admin" && (
           <button className="btn btn-primary" onClick={() => getAllUsers()}>
             Get All Users
           </button>
