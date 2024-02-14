@@ -8,7 +8,7 @@ const { generateJWT } = require("../utils/generateJWT");
 
 const signup = asyncWrapper(async (req, res, next) => {
   const errors = validationResult(req);
-  const { username, email, password } = req.body;
+  const { username, email, password, role } = req.body;
 
   if (!errors.array()) {
     const error = appError.create(errors, httpStatusText.FAIL, 400);
@@ -43,11 +43,14 @@ const signup = asyncWrapper(async (req, res, next) => {
     username,
     email,
     password: hashedPassword,
+    role,
   });
 
   await newUser.save();
 
-  return res.status(201).json({ status: "success", data: { user: newUser } });
+  const { password: newUserPassword, ...rest } = newUser._doc;
+
+  return res.status(201).json({ status: "success", data: { user: rest } });
 });
 
 const signin = asyncWrapper(async (req, res, next) => {
@@ -77,21 +80,16 @@ const signin = asyncWrapper(async (req, res, next) => {
   // Match passwords
   const match = await bcrypt.compare(password, user.password);
   if (match) {
-    const { password, ...rest } = user._doc;
-
-    const token = generateJWT({ email: user.email, id: user._id });
-    const expiresMilliseconds = Date.now() + 365 * 24 * 60 * 60 * 1000;
-    return res
-      .cookie("access_token", token, {
-        httpOnly: true,
-        expires: new Date(expiresMilliseconds),
-        path: "/",
-      })
-      .status(200)
-      .json({
-        status: httpStatusText.SUCCESS,
-        data: { user: rest },
-      });
+    const token = generateJWT({
+      email: user.email,
+      id: user._id,
+      role: user.role,
+    });
+    // const expiresMilliseconds = Date.now() + 365 * 24 * 60 * 60 * 1000;
+    return res.status(200).json({
+      status: httpStatusText.SUCCESS,
+      data: { token },
+    });
   }
 
   const error = appError.create("wrong password!", httpStatusText.FAIL, 400);

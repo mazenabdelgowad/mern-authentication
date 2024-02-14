@@ -31,7 +31,7 @@ app.use((error, req, res, next) => {
     status: error.statusText || httpStatusText.ERROR,
     message: error.message,
     data: null,
-    code: error.statusCode,
+    code: error.statusCode || 500,
   });
 });
 

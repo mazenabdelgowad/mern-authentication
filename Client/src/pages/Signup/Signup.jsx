@@ -103,10 +103,7 @@ const Signup = () => {
       password: password,
     };
 
-    console.log("front end email: ", newUser);
-    // console.log("new stringified user: ", JSON.stringify(newUser));
     // SEND DATA TO SERVER
-
     isLoading(true);
 
     const addNewUser = await fetch(URL, {
@@ -129,7 +126,7 @@ const Signup = () => {
       setErrorMessage(data.message);
       return;
     } else {
-      navigate("/");
+      navigate("/signin");
     }
   };
 

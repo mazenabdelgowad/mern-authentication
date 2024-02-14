@@ -1,9 +1,10 @@
 import { NavLink, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  const doesTokenExist = localStorage.getItem("savedToken");
   const navigate = useNavigate();
   const signout = () => {
-    // localStorage.removeItem("token");
+    localStorage.removeItem("savedToken");
     navigate("/signin");
   };
 
@@ -36,7 +37,7 @@ const Navbar = () => {
                 About
               </NavLink>
             </li>
-            {true ? (
+            {!doesTokenExist ? (
               <li className="nav-item">
                 <NavLink className="nav-link" aria-current="page" to="/signin">
                   Sing in

@@ -78,27 +78,16 @@ const Signin = () => {
     const data = await response.json();
     setIsLoading(false);
 
-    console.log(data);
     // SENDING DATA OT SERVER
-
     // CHECK THE RESPONSE STATUS
     if (data.status !== "success") {
       setErrorStatus(true);
       setErrorMessage(data.message);
       return;
     }
+    localStorage.setItem("savedToken", "Bearer " + data.data.token);
     navigate("/");
   };
-
-  // useEffect(() => {
-  //   // Retrieve the value of the 'access_token' cookie
-  //   const token = document.cookie
-  //     .split("; ")
-  //     .find((row) => row.startsWith("access_token="))
-  //     .split("=")[1];
-
-  //   console.log("token", token); // This will log the value of the access token
-  // }, []);
 
   if (isLoading === true) {
     return <p className="text-center fw-bold fs1">Loading...</p>;

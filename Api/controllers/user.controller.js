@@ -5,7 +5,7 @@ const appError = require("../utils/appError.js");
 const getAllUsers = async (req, res, next) => {
   const users = await User.find({}, { __v: false, password: false });
   if (!users) {
-    const error = appError.create("can't find users", 400, httpStatusText.FAIL);
+    const error = appError.create("can't find users", httpStatusText.FAIL, 400);
     return next(error);
   }
   return res
@@ -13,15 +13,6 @@ const getAllUsers = async (req, res, next) => {
     .json({ status: httpStatusText.SUCCESS, data: { users } });
 };
 
-const getSingleUser = (req, res, next) => {};
-
-const updateUser = (req, res, next) => {};
-
-const deleteUser = (req, res, next) => {};
-
 module.exports = {
   getAllUsers,
-  getSingleUser,
-  updateUser,
-  deleteUser,
 };
